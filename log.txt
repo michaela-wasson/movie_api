@@ -59,3 +59,7 @@ Timestamp: Mon Apr 08 2024 18:08:13 GMT-0700 (Pacific Daylight Time)
 ::ffff:127.0.0.1 - - [09/Apr/2024:01:55:37 +0000] "GET /documentation HTTP/1.1" 404 152 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
 ::ffff:127.0.0.1 - - [09/Apr/2024:01:55:39 +0000] "GET /documentation HTTP/1.1" 404 152 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
 ::ffff:127.0.0.1 - - [09/Apr/2024:01:55:41 +0000] "GET /documentation HTTP/1.1" 404 152 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [09/Apr/2024:02:04:42 +0000] "GET /documentation HTTP/1.1" 301 193 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [09/Apr/2024:02:04:42 +0000] "GET /documentation/ HTTP/1.1" 200 814 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [09/Apr/2024:02:04:57 +0000] "GET /documentation/ HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [09/Apr/2024:02:05:04 +0000] "GET /topTenMovies HTTP/1.1" 404 151 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"

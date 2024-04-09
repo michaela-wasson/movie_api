@@ -15,11 +15,11 @@ app.use("/documentation", express.static("public"));
 
 
 app.get('/movies', (req, res) => {
-    //const topTenMovies = {"one" : [15, 4.5],
+    //var topTenMovies = {"one" : [15, 4.5],
         //"two" : [34, 3.3],
         //"three" : [67, 5.0],
         //"four" : [32, 4.1]};
-    //var topTenMovies = JSON.stringify(dict);
+    //var topTenMovies = JSON.stringify(topTenMovies);
     //fs.writeFile("toptenmovies.json", topTenMovies);
     //I'm guessing the previous code isn't supposed to go here
     res.json(topTenMovies);

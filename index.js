@@ -3,10 +3,10 @@ morgan= require('morgan');
 fs =require('fs');
 path = require('path');
 const app = express();
-const accessLogStream = fs.createWriteStream(path.join(_dirname, 'log.txt'), {flags: 'a'});
+//const accessLogStream = fs.createWriteStream(path.join(_dirname, 'log.txt'), {flags: 'a'});
 
 app.use(morgan('common'));
-app.use(morgan ('combined', {stream:accessLogStream}));
+//app.use(morgan ('combined', {stream:accessLogStream}));
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
@@ -24,6 +24,6 @@ app.get('/', (req, res) => {
 app.get('/documentation', express.static('public'));
 
 
-app.listen(8080, () => {
-    console.log('Your app is listening on port 8080.');
-});
+//app.listen(8080, () => {
+    //console.log('Your app is listening on port 8080.');
+//});

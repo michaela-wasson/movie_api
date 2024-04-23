@@ -1,20 +1,105 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>Documentation for API</title>
     </head>
   <body>
-    <h1>What the API does</h1>
-    <p>
-        ● Return a list of ALL movies to the user
-        ● Return data (description, genre, director, image URL, whether it’s featured or not) about a
-single movie by title to the user
-        ● Return data about a genre (description) by name/title (e.g., “Thriller”)
-        ● Return data about a director (bio, birth year, death year) by name
-        ● Allow new users to register
-        ● Allow users to update their user info (username, password, email, date of birth)
-        ● Allow users to add a movie to their list of favorites
-        ● Allow users to remove a movie from their list of favorites
-        ● Allow existing users to deregister
-    </p>
+    <h1>URL endpoints</h1>
+    <table class="table-url endpoints">
+      <thead>
+        <tr>
+          <th>What the Data Returns</th>
+          <th>URL endpoint</th>
+          <th>Method type</th>
+          <th>Query parameters</th>
+          <th>Format of data in request</th>
+          <th>Format of data in response</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Return a list of ALL movies to the user</td>
+          <td>/movies</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>None</td>
+          <td>a JSON object holding data about all movies</td>
+        </tr>
+        <tr>
+          <td>Return data (description, genre, director, image URL, whether it is featured or not) about a
+            single movie by title to the user</td>
+          <td>/movies/[title]</td>
+          <td>GET</td>
+          <td>one movie title</td>
+          <td>none</td>
+          <td>A JSON object holding data about a movie, containing genre, director, image URL, feature: example 
+            [
+            movie title: Spain
+            description: a terrible movie where the dog dies 
+            genre: horror
+            director: Fernidad
+            image: dog.jpeg
+            featured: false]
+          </td>
+        </tr>
+        <tr>
+          <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
+          <td>/movies/[genre]</td>
+          <td>GET</td>
+          <td>genre name</td>
+          <td>none</td>
+          <td>return JSON objects of all movies that include the genre</td>
+        </tr>
+        <tr>
+          <td>Return data about a director (bio, birth year, death year) by name</td>
+          <td>/directors/[name]</td>
+          <td>GET</td>
+          <td>one director</td>
+          <td>none since its defined in the url</td>
+          <td>A JSON object holding data about a director</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Allow new users to register</td>
+          <td>/users</td>
+          <td>POST</td>
+          <td>one user</td>
+          <td>A JSON object including the users' registration data: name, password, email</td>
+          <td>message: You're registered!</td>
+        </tr>
+        <tr>
+          <td>Allow users to update their user info (username, password, email, date of birth)</td>
+          <td>/users/[name]/[type of info]</td>
+          <td>PUT</td>
+          <td>none since its defined in the url</td>
+          <td>A JSON object including the type of data to update and the updated data</td>
+          <td>message: [type of info] updated</td>
+        </tr>
+        <tr>
+          <td>Allow users to add a movie to their list of favorites</td>
+          <td>/users/[name]/[favorites]</td>
+          <td>POST</td>
+          <td>movie they want to update</td>
+          <td>A JSON object including the movie they want to add</td>
+          <td>message: [movie name] added to your list of favorites</td>
+        </tr>
+        <tr>
+          <td>Allow users to remove a movie from their list of favorites</td>
+          <td>/users/[name]/[favorites]</td>
+          <td>DELETE</td>
+          <td>name of movie they want to delete</td>
+          <td>None</td>
+          <td>message: [movie name] deleted</td>
+        </tr>
+        <tr>
+          <td>Allow existing users to deregister</td>
+          <td>/users/[name]</td>
+          <td>DELETE</td>
+          <td>none since its included in the url</td>
+          <td>none</td>
+          <td>message: your account is deleted</td>
+        </tr>
+      </tbody>
+  </table> 
   </body>
 </html>

@@ -46,7 +46,7 @@ let movies = [
     {
       title: 'Lord of the Rings',
       director: 'Peter Jackson',
-      genre: 'Super-Heroes'
+      genre: 'Fantasy'
     },
     {
       title: 'The Matrix',
@@ -68,40 +68,26 @@ let movies = [
         director: 'James Cameron',
         genre: 'Action'
       },
-      {
-        title: 'The Prestige',
-        director: 'Christopher Nolan',
-        genre: 'Suspense-Thriller'
-      },
-      {
-        title: 'Shutter Island',
-        director: 'Martin Scorsese',
-        genre:'Suspense-Thriller'
-      },
-      {
-        title: 'The Fugitive',
-        director: 'Andrew Davis',
-        genre: 'Suspense-Thriller'
-      },
-      {
-        title: 'The Shack',
-        director: 'Stuart Hazeldine',
-        genre: 'Feel-Good'
-      }
+  ];
+  
+  let directors = [
+    {
+        name: 'Peter Jackson',
+        bio: 'I love peas......',
+        birth: '....'
+    },
+    {
+        name: 'Anthony Russo',
+        bio: '...',
+        birth: '...'
+    },
+    {
+        name: 'James Cameron', 
+        bio: '....', 
+        birth: '....'
+    },
   ];
 
-
-
-app.get('/movies', (req, res) => {
-    //var topTenMovies = {"one" : [15, 4.5],
-        //"two" : [34, 3.3],
-        //"three" : [67, 5.0],
-        //"four" : [32, 4.1]};
-    //var topTenMovies = JSON.stringify(topTenMovies);
-    //fs.writeFile("toptenmovies.json", topTenMovies);
-    //I'm guessing the previous code isn't supposed to go here
-    res.json(topTenMovies);
-});
 
 app.get('/', (req, res) => {
     res.send('Let me get you started');
@@ -121,36 +107,35 @@ app.get('/movies', (req, res) => {
     res.json(movies);
 })
 //Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user;
-app.get ('/movies/[title]', (req, res) => {
-    let {title} =req.params;
+app.get ('/movies/:title', (req, res) => {
+    let {title} = req.params;
     let movie = movies.find(movie => movie.title === title)
     res.json(movie);
 })
 //Return data about a genre (description) by name/title (e.g., “Thriller”);
-app.get ('/movies/[title]/[genre]', (req, res) => {
+app.get ('/movies/:title/genre', (req, res) => {
     let {title} = req.params;
     let movie = movies.find(movie => movie.title === title)
     res.json(movie.genre);
 })
 //Return data about a director (bio, birth year, death year) by name;
-app.get ('/movies/[title]/director', (req, res) => {
-    let {title} = req.params;
-    let movie = movies.find(movie => movie.title === title)
-    res.json(movie.director);
+app.get ('/directors/:name', (req, res) => {
+    let {name} = req.params;
+    let  director = directors.find( director=> director.name === name)
+    res.json(director);
 })
 //Allow new users to register;
-app.post ('/users', (req, res) => {
-    let newUser = req.body;
-    if(newUser.fullname){
-        newUser.id = uuid.v4();
-        users.push(newUser);
+app.post ('/users/:newUser', (req, res) => {
+    let {newUser} = req.params;
+    let user = {
+        id: uuid.v4(),
+        fullname: newUser,
     }
-    else{
-        res.send("Please, add full name")
-    }
+    users.push(newUser);
+    res.send("New User added.")
 })
 //Allow users to update their user info (username);
-app.put ('/users/[id]', (req, res) => {
+app.put ('/users/:id', (req, res) => {
     let {id} = req.params;
     let updatedUser = req.body;
     let user = users.find (user => user.id == id);
@@ -168,7 +153,7 @@ app.put ('/users/[id]', (req, res) => {
     }
 })
 //Allow users to add a movie to their list of favorites (showing only a text that a movie has been added—more on this later);
-app.post ('/users/[id]/[title]', (req, res) => {
+app.post ('/users/:id/:title', (req, res) => {
     let {id, title} = req.params;
     let user = users.find(user => user.id === id)
     let newTitle = { 
@@ -185,7 +170,7 @@ app.post ('/users/[id]/[title]', (req, res) => {
     }
 })
 //Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later);
-app.delete ('/users/[id]/[title]', (req, res) => {
+app.delete ('/users/:id/:title', (req, res) => {
     let {id, title} = req.params;
     let user = users.find (user => user.id === id); 
     if (user){
@@ -197,7 +182,7 @@ app.delete ('/users/[id]/[title]', (req, res) => {
 
 })
 //Allow existing users to deregister (showing only a text that a user email has been removed—more on this later).
-app.delete ('/users/[id]', (req, res) => {
+app.delete ('/users/:id', (req, res) => {
     let {id} = req.params;
     let user = users.find( user => user.id === id);
     if (user){

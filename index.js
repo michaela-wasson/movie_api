@@ -125,8 +125,8 @@ app.get ('/directors/:name', (req, res) => {
     res.json(director);
 })
 //Allow new users to register;
-app.post ('/users/:newUser', (req, res) => {
-    let {newUser} = req.params;
+app.post ('/users', (req, res) => {
+    let newUser = req.body;
     let user = {
         id: uuid.v4(),
         fullname: newUser,
@@ -143,7 +143,7 @@ app.put ('/users/:id', (req, res) => {
     if (user) {
         user = {
             user: user.id,
-            fullname: updatedUser.fullname,
+            fullname: updatedUser,
             email: user.email,
             favMovies: user.favMovies
         };
@@ -157,7 +157,7 @@ app.post ('/users/:id/:title', (req, res) => {
     let {id, title} = req.params;
     let user = users.find(user => user.id === id)
     let newTitle = { 
-        title, 
+        title: title,
         director: req.body.director,
         genre: req.body.genre
     }; 
@@ -174,7 +174,7 @@ app.delete ('/users/:id/:title', (req, res) => {
     let {id, title} = req.params;
     let user = users.find (user => user.id === id); 
     if (user){
-        delete favMovies.title;
+        delete user.favMovies.title;
     }
     else {
         res.send("sorry, can't find you")

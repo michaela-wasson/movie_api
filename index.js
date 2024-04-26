@@ -1,10 +1,12 @@
 const express = require('express');
-morgan= require('morgan');
-fs =require('fs');
-path = require('path');
+const morgan= require('morgan');
+const fs =require('fs');
+const path = require('path');
 const app = express();
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
+const uuid = require('uuid');
 
+app.use(express.json());
 app.use(morgan('common'));
 app.use(morgan ('combined', {stream:accessLogStream}));
 app.use((err, req, res, next) => {
@@ -137,7 +139,7 @@ app.post ('/users', (req, res) => {
 //Allow users to update their user info (username);
 app.put ('/users/:id', (req, res) => {
     let {id} = req.params;
-    let updatedUser = req.body;
+    let updatedUser = req.body.fullname;
     let user = users.find (user => user.id == id);
 
     if (user) {
@@ -146,7 +148,10 @@ app.put ('/users/:id', (req, res) => {
             fullname: updatedUser,
             email: user.email,
             favMovies: user.favMovies
+        
         };
+
+        res.send("User is updated");
     }
     else {
         res.send ("Sorry. Can't find you.")
@@ -172,9 +177,11 @@ app.post ('/users/:id/:title', (req, res) => {
 //Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later);
 app.delete ('/users/:id/:title', (req, res) => {
     let {id, title} = req.params;
-    let user = users.find (user => user.id === id); 
-    if (user){
-        delete user.favMovies.title;
+    let index = users.findIndex (user => user.id === id); 
+    if (index > -1){
+        
+        users[index].favMovies = users[index].favMovies.filter(mov => mov.title !== title)
+        res.json({message:"favmovie delete", user:users[index]});
     }
     else {
         res.send("sorry, can't find you")
@@ -184,11 +191,12 @@ app.delete ('/users/:id/:title', (req, res) => {
 //Allow existing users to deregister (showing only a text that a user email has been removed—more on this later).
 app.delete ('/users/:id', (req, res) => {
     let {id} = req.params;
-    let user = users.find( user => user.id === id);
-    if (user){
-        delete user;
-        res.send("Your account is deleted!")
-    }
+    let user = users.filter( user => user.id !== id);
+    res.json({message:"user deleted", user:user});
+    // //if (user){
+    //    / delete user;
+    //     res.send("Your account is deleted!")
+    // }
 })
 
 

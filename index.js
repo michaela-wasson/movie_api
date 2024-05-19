@@ -43,7 +43,7 @@ app.get("/documentation", (req, res) => {
 
 
 //express code for api endpoints 
-//Return a list of ALL movies to the user;
+//Return a list of ALL movies to the user; //works
 app.get('/movies', async (req, res) => {
     await Movies.find()
       .then((movies) => {
@@ -55,6 +55,7 @@ app.get('/movies', async (req, res) => {
       });
   });
 
+//works
 //Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user;
 app.get('/movies/:title', async (req, res) => {
     await Movies.findOne({ Title: req.params.title })
@@ -69,10 +70,11 @@ app.get('/movies/:title', async (req, res) => {
 
 
 //Return data about a genre (description) by name/title (e.g., “Thriller”);
-app.get('/movies/:genre', async (req, res) => {
-    await Movies.findOne({ "Genre.Name": req.params.genre})
-      .then((genre) => {
-        res.json(genre);
+app.get('/movies/genre/:name', async (req, res) => {
+    const genreName= req.params.name;
+    const movie = await Movies.findOne({ 'Genre.Name': genreName})
+      .then((movie) => {
+        res.json(movie.Genre);
       })
       .catch((err) => {
         console.error(err);
@@ -82,10 +84,11 @@ app.get('/movies/:genre', async (req, res) => {
 
 
 //Return data about a director (bio, birth year, death year) by name;
-app.get('/movies/:director', async (req, res) => {
-    await Movies.findOne({ Director: req.params.director})
-      .then((director) => {
-        res.json(director);
+app.get('/movies/directors/:director', async (req, res) => {
+    const director = req.params.director;
+    const movie = await Movies.findOne({ 'Director.Name': director})
+      .then((movie) => {
+        res.json(movie.Director);
       })
       .catch((err) => {
         console.error(err);
@@ -94,7 +97,8 @@ app.get('/movies/:director', async (req, res) => {
   });
 
 
-//Allow new users to register;
+//Allow new users to register; 
+//works
 app.post('/users', async (req, res) => {
     await Users.findOne({ Username: req.body.Username })
       .then((user) => {
@@ -122,7 +126,8 @@ app.post('/users', async (req, res) => {
   });
 
 
-//Allow users to update their user info (username);
+//Allow users to update their user info (username); 
+//works
 app.put('/users/:Username', async (req, res) => {
     await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
       {
@@ -143,8 +148,9 @@ app.put('/users/:Username', async (req, res) => {
   
   });
 
+//works
 //Allow users to add a movie to their list of favorites (showing only a text that a movie has been added—more on this later);
-app.post('/users/:Username/movies/:MovieID', async (req, res) => {
+app.post('/users/:Username/:MovieID', async (req, res) => {
     await Users.findOneAndUpdate({ Username: req.params.Username }, {
        $push: { FavoriteMovies: req.params.MovieID }
      },
@@ -159,6 +165,7 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
   });
 
 
+//works
 //Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later);
 app.post('/users/:Username/movies/:MovieID', async (req, res) => {
     await Users.findOneAndUpdate({ Username: req.params.Username }, {
@@ -174,9 +181,10 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
     });
   });
 
+//works
 //Allow existing users to deregister (showing only a text that a user email has been removed—more on this later).
 app.delete('/users/:Username', async (req, res) => {
-    await Users.findOneAndRemove({ Username: req.params.Username })
+    await Users.findOneAndDelete({ Username: req.params.Username })
       .then((user) => {
         if (!user) {
           res.status(400).send(req.params.Username + ' was not found');

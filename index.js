@@ -16,6 +16,8 @@ const uuid = require('uuid');
 app.use(express.json());
 //app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: true }));
+const cors = require('cors');
+app.use(cors());
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
@@ -103,6 +105,7 @@ app.get('/movies/directors/:director', passport.authenticate('jwt', {session: fa
 //Allow new users to register; 
 //works
 app.post('/users', async (req, res) => {
+  let hashedPassword = Users.hashPassword(req.body.Password);
     await Users.findOne({ Username: req.body.Username })
       .then((user) => {
         if (user) {
@@ -111,7 +114,7 @@ app.post('/users', async (req, res) => {
           Users
             .create({
               Username: req.body.Username,
-              Password: req.body.Password,
+              Password: hashedPassword,
               Email: req.body.Email,
               Birthday: req.body.Birthday
             })

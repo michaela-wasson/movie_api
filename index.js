@@ -3,7 +3,8 @@ const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
-mongoose.connect('mongodb://localhost:27017/[myflixdb]', { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb://localhost:27017/[myflixdb]', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://michaelajaewasson:Sophocles_93@movieapi.mongodb.net/MovieAPI?retryWrites=true&w=majority&appName=MovieAPI', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const express = require('express');
 const morgan= require('morgan');
@@ -226,7 +227,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), a
   });
 
 
-  const port = process.env.PORT || 8080;
+  const port = process.env.CONNECTION_URI || 8080;
   app.listen(port, '0.0.0.0',() => {
    console.log('Listening on Port ' + port);
   });

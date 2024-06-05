@@ -21,6 +21,7 @@ app.use(cors());
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
+const { check, validationResult } = require('express-validator');
 app.use(morgan('common'));
 app.use(morgan ('combined', {stream:accessLogStream}));
 app.use((err, req, res, next) => {
@@ -104,7 +105,17 @@ app.get('/movies/directors/:director', passport.authenticate('jwt', {session: fa
 
 //Allow new users to register; 
 //works
-app.post('/users', async (req, res) => {
+app.post('/users', [
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid').isEmail()
+], async (req, res) => {
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  } 
   let hashedPassword = Users.hashPassword(req.body.Password);
     await Users.findOne({ Username: req.body.Username })
       .then((user) => {
@@ -134,7 +145,17 @@ app.post('/users', async (req, res) => {
 
 //Allow users to update their user info (username); 
 //works
-app.put('/users/:Username', passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.put('/users/:Username', [
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid').isEmail()
+],passport.authenticate('jwt', {session: false}), async (req, res) => {
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  } 
     await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
       {
         Username: req.body.Username,
@@ -205,6 +226,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), a
   });
 
 
-app.listen(8080, () => {
-    console.log('Your app is listening on port 8080.');
-});
+  const port = process.env.PORT || 8080;
+  app.listen(port, '0.0.0.0',() => {
+   console.log('Listening on Port ' + port);
+  });

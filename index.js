@@ -4,7 +4,10 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 //mongoose.connect('mongodb://localhost:27017/[myflixdb]', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect('mongodb+srv://michaelajaewasson:Sophocles_93@movieapi.mongodb.net/MovieAPI?retryWrites=true&w=majority&appName=MovieAPI', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 const express = require('express');
 const morgan= require('morgan');

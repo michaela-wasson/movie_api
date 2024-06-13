@@ -55,8 +55,11 @@ app.get("/documentation", (req, res) => {
 //express code for api endpoints 
 //Return a list of ALL movies to the user; //works
 app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+  console.log("Movies", Movies);
   Movies.find()
     .then((movies) => {
+      console.log("movies", movies);
+      console.log("json", json(movies));
       res.status(201).json(movies);
     })
     .catch((err) => {

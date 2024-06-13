@@ -54,16 +54,16 @@ app.get("/documentation", (req, res) => {
 
 //express code for api endpoints 
 //Return a list of ALL movies to the user; //works
-app.get('/movies', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    await Movies.find()
-      .then((movies) => {
-        res.status(201).json(movies);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-  });
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies.find()
+    .then((movies) => {
+      res.status(201).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 
 //works
 //Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user;
@@ -83,12 +83,12 @@ app.get('/movies/:title', passport.authenticate('jwt', {session: false}), async 
 app.get('/genres/:name', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const genreName = req.params.name;
   try {
-      // Find all movies that have the specified genre
+      
       const movies = await Movies.find({ 'Genre.Name': genreName });
       if (!movies || movies.length === 0) {
           return res.status(404).json({ error: 'No movies found with the specified genre' });
       }
-      // If movies are found, send them in the response
+      
       res.json(movies);
   } catch (err) {
       console.error(err);
@@ -102,12 +102,12 @@ app.get('/genres/:name', passport.authenticate('jwt', { session: false }), async
 app.get('/directors/:director', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const director = req.params.director;
   try {
-      // Find all movies made by the specified director
+      
       const movies = await Movies.find({ 'Director.Name': director });
       if (!movies || movies.length === 0) {
           return res.status(404).json({ error: 'No movies found for the specified director' });
       }
-      // If movies are found, send them in the response
+      
       res.json(movies);
   } catch (err) {
       console.error(err);

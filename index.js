@@ -80,31 +80,41 @@ app.get('/movies/:title', passport.authenticate('jwt', {session: false}), async 
 
 
 //Return data about a genre (description) by name/title (e.g., “Thriller”);
-app.get('/movies/genre/:name', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    const genreName= req.params.name;
-    const movie = await Movies.findOne({ 'Genre.Name': genreName})
-      .then((movie) => {
-        res.json(movie.Genre);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-  });
+app.get('/genres/:name', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const genreName = req.params.name;
+  try {
+      // Find all movies that have the specified genre
+      const movies = await Movies.find({ 'Genre.Name': genreName });
+      if (!movies || movies.length === 0) {
+          return res.status(404).json({ error: 'No movies found with the specified genre' });
+      }
+      // If movies are found, send them in the response
+      res.json(movies);
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+  }
+});
+
 
 
 //Return data about a director (bio, birth year, death year) by name;
-app.get('/movies/directors/:director', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    const director = req.params.director;
-    const movie = await Movies.findOne({ 'Director.Name': director})
-      .then((movie) => {
-        res.json(movie.Director);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-  });
+app.get('/directors/:director', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const director = req.params.director;
+  try {
+      // Find all movies made by the specified director
+      const movies = await Movies.find({ 'Director.Name': director });
+      if (!movies || movies.length === 0) {
+          return res.status(404).json({ error: 'No movies found for the specified director' });
+      }
+      // If movies are found, send them in the response
+      res.json(movies);
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+  }
+});
+
 
 
 //Allow new users to register; 

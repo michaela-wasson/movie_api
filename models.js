@@ -34,7 +34,7 @@ let movieSchema = mongoose.Schema({
     return bcrypt.compareSync(password, this.Password);
   };
   
-  let Movie = mongoose.model('Movie', movieSchema);
+  let Movie = mongoose.model('Movie', movieSchema, 'movies');
   let User = mongoose.model('User', userSchema);
 
   

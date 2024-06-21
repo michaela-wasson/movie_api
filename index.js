@@ -56,6 +56,9 @@ app.get("/documentation", (req, res) => {
 //Return a list of ALL movies to the user; //works
 app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   console.log("Movies", Movies);
+  console.log("req", req);
+  console.log("res", res);
+  console.log("find", Movies.find());
   Movies.find()
     .then((movies) => {
       console.log("movies", movies);

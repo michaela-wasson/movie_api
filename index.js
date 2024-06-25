@@ -51,8 +51,11 @@ app.get("/documentation", (req, res) => {
 
 //express code for api endpoints 
 //Return a list of ALL movies to the user; //works
-app.get('/movies', (req, res) => {
-
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+  console.log("Movies", Movies);
+  console.log("req", req);
+  console.log("res", res);
+  console.log("find", Movies.find());
   Movies.find()
     .then((movies) => {
       console.log("movies", movies);
@@ -63,7 +66,7 @@ app.get('/movies', (req, res) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
-});
+};
 
 //works
 //Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user;

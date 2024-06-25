@@ -17,8 +17,6 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
 const uuid = require('uuid');
 
 app.use(express.json());
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: true }));
 const cors = require('cors');
 app.use(cors());
 let auth = require('./auth')(app);
@@ -53,11 +51,8 @@ app.get("/documentation", (req, res) => {
 
 //express code for api endpoints 
 //Return a list of ALL movies to the user; //works
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
-  console.log("Movies", Movies);
-  console.log("req", req);
-  console.log("res", res);
-  console.log("find", Movies.find());
+app.get('/movies', (req, res) => {
+
   Movies.find()
     .then((movies) => {
       console.log("movies", movies);

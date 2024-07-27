@@ -164,7 +164,8 @@ app.put('/users/:Username', [
   //check('Password', 'Password is required').not().isEmpty(),
   check('Email', 'Email does not appear to be valid').isEmail()
 ],passport.authenticate('jwt', {session: false}), async (req, res) => {
-  console.log("request", req);
+  console.log("request", req.params);
+  console.log("request body", req.body);
   let errors = validationResult(req);
 
   if (!errors.isEmpty()) {
